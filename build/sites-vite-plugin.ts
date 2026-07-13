@@ -27,7 +27,9 @@ export function sites(): Plugin {
     async closeBundle() {
       const outputDirectory = resolve(root, "dist", ".openai");
       const hostingConfig = resolve(root, ".openai", "hosting.json");
-      const drizzleSource = resolve(root, "drizzle");
+      const generatedDrizzle = resolve(root, "drizzle");
+      const legacyDrizzle = resolve(root, "migrations-smartstay");
+      const drizzleSource = await exists(generatedDrizzle) ? generatedDrizzle : legacyDrizzle;
 
       await rm(outputDirectory, { recursive: true, force: true });
       await mkdir(outputDirectory, { recursive: true });

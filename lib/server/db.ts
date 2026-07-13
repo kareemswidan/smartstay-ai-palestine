@@ -45,20 +45,27 @@ async function seedProperties(db: D1Database) {
     if (existing) continue;
     await db.prepare(`INSERT INTO ss_properties (id, owner_id, slug, name, name_ar, type, city, city_ar, area, area_ar, description, description_ar, price, capacity, bedrooms, bathrooms, latitude, longitude, status, instant_book, featured) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'approved', ?, 1)`)
       .bind(stay.id, owner.id, stay.slug, stay.name, stay.nameAr, stay.type, stay.city, stay.cityAr, stay.area, stay.areaAr, stay.description, stay.descriptionAr, stay.price, stay.guests, stay.bedrooms, stay.bathrooms, stay.latitude, stay.longitude, stay.instant ? 1 : 0).run();
-    await db.prepare("INSERT INTO ss_property_images (property_id, url, sort_order) VALUES (?, ?, 0)").bind(stay.id, stay.image).run();
-    for (let index = 0; index < stay.gallery.length; index++) await db.prepare("INSERT INTO ss_property_images (property_id, url, sort_order) VALUES (?, ?, ?)").bind(stay.id, stay.gallery[index], index + 1).run();
-    for (const amenity of stay.amenities) await db.prepare("INSERT INTO ss_property_amenities (property_id, amenity) VALUES (?, ?)").bind(stay.id, amenity).run();
+    await db.batch([
+      db.prepare("INSERT INTO ss_property_images (property_id, url, sort_order) VALUES (?, ?, 0)").bind(stay.id, stay.image),
+      ...stay.gallery.map((image, index) => db.prepare("INSERT INTO ss_property_images (property_id, url, sort_order) VALUES (?, ?, ?)").bind(stay.id, image, index + 1)),
+      ...stay.amenities.map((amenity) => db.prepare("INSERT INTO ss_property_amenities (property_id, amenity) VALUES (?, ?)").bind(stay.id, amenity)),
+    ]);
   }
 }
 
 export async function getDatabase() {
-  if (!ready) ready = (async () => {
-    const db = env.DB;
-    if (!db) throw new Error("D1 binding DB is not configured");
-    await db.batch(statements.map((sql) => db.prepare(sql)));
-    await seedUsers(db);
-    await seedProperties(db);
-    return db;
-  })();
+  if (!ready) {
+    ready = (async () => {
+      const db = env.DB;
+      if (!db) throw new Error("D1 binding DB is not configured");
+      await db.batch(statements.map((sql) => db.prepare(sql)));
+      await seedUsers(db);
+      await seedProperties(db);
+      return db;
+    })().catch((error) => {
+      ready = null;
+      throw error;
+    });
+  }
   return ready;
 }
