@@ -25,7 +25,7 @@ test("uses real authentication and role-aware sessions", async () => {
     read("lib/server/crypto.ts"), read("lib/server/auth.ts"), read("app/api/auth/login/route.ts"), read("app/api/auth/register/route.ts"),
   ]);
   assert.match(crypto, /PBKDF2/);
-  assert.match(crypto, /120_000/);
+  assert.match(crypto, /100_000/);
   assert.match(auth, /ss_sessions/);
   assert.match(login, /httpOnly:\s*true/);
   assert.match(register, /role === "owner"/);

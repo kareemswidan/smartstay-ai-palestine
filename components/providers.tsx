@@ -16,6 +16,8 @@ export function Providers({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const saved = window.localStorage.getItem("smartstay-language") as Language | null;
+    // Restore the browser preference after hydration so the server markup stays deterministic.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (saved === "ar") setLanguage("ar");
     document.documentElement.classList.toggle("capture-mode", new URLSearchParams(window.location.search).get("capture") === "1");
   }, []);
@@ -35,6 +37,8 @@ export function Providers({ children }: { children: React.ReactNode }) {
     finally { setLoading(false); }
   }, []);
 
+  // refreshUser updates state only after its asynchronous request has completed.
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => { void refreshUser(); }, [refreshUser]);
 
   const logout = useCallback(async () => {

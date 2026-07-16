@@ -2,6 +2,10 @@
 
 Professional bilingual marketplace for hotels, chalets, villas, resorts and local stays across Palestine.
 
+[![CI](https://github.com/kareemswidan/smartstay-ai-palestine/actions/workflows/ci.yml/badge.svg)](https://github.com/kareemswidan/smartstay-ai-palestine/actions/workflows/ci.yml)
+
+Engineering documentation: [architecture and data model](docs/ARCHITECTURE.md) · [authentication and authorization](docs/AUTHORIZATION.md)
+
 ## Product showcase
 
 ### English experience
@@ -40,7 +44,7 @@ The complete **66-image** product walkthrough is available in [`docs/screenshots
 ## Real backend
 
 - Cloudflare D1 database with nine relational tables.
-- PBKDF2 password hashing with a unique salt and 120,000 iterations.
+- PBKDF2 password hashing with a unique salt and 100,000 iterations.
 - Server-side sessions stored as SHA-256 token hashes and delivered using HttpOnly cookies.
 - Role-aware customer, owner and admin APIs.
 - Cloudflare R2 image uploads for owner property galleries.

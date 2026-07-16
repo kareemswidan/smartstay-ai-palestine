@@ -1,0 +1,10 @@
+node_modules
+.git
+.github
+.next
+.vinext
+dist
+.wrangler
+.site-package-stage-*
+*.log
+.env*
