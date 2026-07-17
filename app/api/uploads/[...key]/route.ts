@@ -1,13 +1,16 @@
-import { env } from "cloudflare:workers";
+import { getDatabase } from "@/lib/server/db";
 
 export async function GET(_: Request, context: { params: Promise<{ key: string[] }> }) {
   const { key } = await context.params;
-  if (!env.UPLOADS) return new Response("Storage unavailable", { status: 503 });
-  const object = await env.UPLOADS.get(key.join("/"));
+  const db = await getDatabase();
+  const object = await db.prepare("SELECT content_type, data FROM ss_uploads WHERE object_key = ? LIMIT 1")
+    .bind(key.join("/"))
+    .first<{ content_type: string; data: ArrayBuffer }>();
   if (!object) return new Response("Not found", { status: 404 });
-  const headers = new Headers();
-  object.writeHttpMetadata(headers);
-  headers.set("cache-control", "public, max-age=31536000, immutable");
-  headers.set("etag", object.httpEtag);
-  return new Response(object.body, { headers });
+  return new Response(object.data, {
+    headers: {
+      "content-type": object.content_type,
+      "cache-control": "public, max-age=31536000, immutable",
+    },
+  });
 }

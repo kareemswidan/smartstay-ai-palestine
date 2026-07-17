@@ -43,14 +43,15 @@ test("prevents overlapping bookings at the database level", async () => {
   assert.match(migration, /CREATE UNIQUE INDEX `ss_booking_slot_unique`/);
 });
 
-test("supports owner property creation and image uploads", async () => {
+test("supports owner property creation and D1-backed image uploads", async () => {
   const [propertyApi, uploadApi, config] = await Promise.all([
     read("app/api/properties/route.ts"), read("app/api/uploads/route.ts"), read(".openai/hosting.json"),
   ]);
   assert.match(propertyApi, /status:\s*"pending"/);
-  assert.match(uploadApi, /env\.UPLOADS\.put/);
+  assert.match(uploadApi, /INSERT INTO ss_uploads/);
+  assert.match(uploadApi, /MAX_UPLOAD_BYTES/);
   assert.match(config, /"d1": "DB"/);
-  assert.match(config, /"r2": "UPLOADS"/);
+  assert.doesNotMatch(config, /"r2"/);
 });
 
 test("keeps the home search bar visible below the hero", async () => {

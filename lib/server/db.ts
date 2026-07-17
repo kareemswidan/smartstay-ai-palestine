@@ -20,6 +20,7 @@ const statements = [
   `CREATE INDEX IF NOT EXISTS ss_booking_slots_lookup_idx ON ss_booking_slots(property_id, slot_key)`,
   `CREATE TABLE IF NOT EXISTS ss_reviews (id INTEGER PRIMARY KEY AUTOINCREMENT, property_id INTEGER NOT NULL, user_id INTEGER NOT NULL, rating INTEGER NOT NULL, comment TEXT, created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP, UNIQUE(property_id, user_id), FOREIGN KEY(property_id) REFERENCES ss_properties(id), FOREIGN KEY(user_id) REFERENCES ss_users(id))`,
   `CREATE TABLE IF NOT EXISTS ss_favorites (user_id INTEGER NOT NULL, property_id INTEGER NOT NULL, created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY(user_id, property_id), FOREIGN KEY(user_id) REFERENCES ss_users(id) ON DELETE CASCADE, FOREIGN KEY(property_id) REFERENCES ss_properties(id) ON DELETE CASCADE)`,
+  `CREATE TABLE IF NOT EXISTS ss_uploads (object_key TEXT PRIMARY KEY, owner_id INTEGER NOT NULL, content_type TEXT NOT NULL, original_name TEXT NOT NULL, data BLOB NOT NULL CHECK(length(data) <= 1572864), created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP, FOREIGN KEY(owner_id) REFERENCES ss_users(id) ON DELETE CASCADE)`,
 ];
 
 async function seedUsers(db: D1Database) {
