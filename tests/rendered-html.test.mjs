@@ -52,3 +52,10 @@ test("supports owner property creation and image uploads", async () => {
   assert.match(config, /"d1": "DB"/);
   assert.match(config, /"r2": "UPLOADS"/);
 });
+
+test("keeps the home search bar visible below the hero", async () => {
+  const styles = await read("app/globals.css");
+  assert.match(styles, /\.home-hero\{[^}]*overflow:visible/);
+  assert.match(styles, /\.hero-search\{[^}]*bottom:-40px/);
+  assert.match(styles, /\.motion-strip\{[^}]*margin-top:40px/);
+});
