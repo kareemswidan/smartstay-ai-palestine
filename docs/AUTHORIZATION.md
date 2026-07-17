@@ -20,9 +20,9 @@ Route handlers do not trust the interface to enforce access. They call `getCurre
 ## Abuse and data controls
 
 - Registration only accepts supported public roles; administrator accounts are seeded outside public registration.
-- Upload endpoints require an owner/admin session and store binary files separately from relational records.
+- Upload endpoints require an owner/admin session and store image metadata and binary content in a dedicated D1 table.
 - Booking creation validates dates and capacity, limits a single booking range, and returns HTTP 409 for a collision.
-- Tests assert session-cookie flags, role-aware registration, R2 upload usage, and the database uniqueness protection.
+- Tests assert session-cookie flags, role-aware registration, D1-backed upload usage, and the database uniqueness protection.
 
 ## Demo accounts
 
@@ -30,8 +30,8 @@ Local/demo data seeds one account per role:
 
 | Role | Email | Password |
 | --- | --- | --- |
-| Customer | `customer@smartstay.ps` | `Customer2026!` |
-| Owner | `owner@smartstay.ps` | `Owner2026!` |
-| Admin | `admin@smartstay.ps` | `Admin2026!` |
+| Customer | `guest@smartstay.ps` | `Guest123!` |
+| Owner | `owner@smartstay.ps` | `Owner123!` |
+| Admin | `admin@smartstay.ps` | `Admin123!` |
 
 These credentials are for the public demonstration only and must not be reused for real services.

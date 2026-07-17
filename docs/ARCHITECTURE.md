@@ -9,7 +9,7 @@ Browser
   -> Next.js pages and server components
   -> Route handlers under app/api
   -> authentication and business services under lib/server
-  -> Cloudflare D1 (relational records) and R2 (property images)
+  -> Cloudflare D1 (relational records and property images)
 ```
 
 ## Main boundaries
@@ -36,10 +36,10 @@ Booking availability is protected in two layers. The API checks for existing slo
 
 ## Storage decisions
 
-- D1 keeps accounts, sessions, properties, bookings, favorites, and indexed booking slots in one transactional relational store.
-- R2 stores uploaded property images; D1 stores their public object URLs and ordering metadata.
+- D1 keeps accounts, sessions, properties, bookings, favorites, indexed booking slots, and uploaded property images in the free public deployment.
+- Image metadata and binary content stay behind authenticated owner/admin routes, with a conservative upload-size limit for the portfolio demo.
 - Drizzle documents the schema and produces migrations, while prepared D1 statements keep route handlers explicit.
 
 ## Deployment
 
-The repository includes a GitHub Actions verification workflow and a Docker development image. Production bindings are declared in `.openai/hosting.json`; secrets are supplied by the hosting environment rather than committed to source control.
+The repository includes a GitHub Actions verification workflow and a Docker development image. Production runs on Cloudflare Workers with a D1 binding; deployment credentials stay outside source control.
