@@ -1,0 +1,39 @@
+/* Typography tokens mirrored from Kareem Swidan's portfolio. */
+:root {
+  --font-latin: Manrope, Arial, sans-serif;
+  --font-arabic: "IBM Plex Sans Arabic", Arial, sans-serif;
+  --type-hero: clamp(42px, 5.6vw, 70px);
+  --type-section: clamp(34px, 4.6vw, 54px);
+  --type-card-title: 23px;
+  --type-lead: 16px;
+  --type-copy: 13px;
+  --type-nav: 12px;
+  --type-control: 11px;
+  --type-small: 10px;
+  --display: var(--font-latin);
+  --body: var(--font-latin);
+}
+
+html[dir="rtl"] {
+  --display: var(--font-arabic);
+  --body: var(--font-arabic);
+}
+
+body { font-family: var(--body); font-size: 16px; line-height: 1.65; }
+button, input, textarea, select { font-family: inherit; }
+html[dir="rtl"] :is(h1,h2,h3,p,a,button,label,input,textarea,select,small,span) { letter-spacing: 0 !important; }
+.header-shell > nav a { font-size: var(--type-nav); }
+.kicker, .overline { font-family: inherit; font-size: 14px; line-height: 1.5; }
+.hero-copy h1, .host-hero h1 { font-family: var(--display); font-size: var(--type-hero); line-height: 1.02; letter-spacing: -.055em; }
+.hero-copy > p { font-size: var(--type-lead); line-height: 1.8; }
+.section-head h2, .ai-copy h2, .host-copy h2, .final-cta h2 { font-family: var(--display); font-size: var(--type-section); line-height: 1.12; letter-spacing: -.04em; }
+.stay-content a h3, .city-card h3, .step-card h3, .host-benefits h3 { font-family: var(--display); font-size: var(--type-card-title); line-height: 1.35; }
+.stay-content > p, .step-card p, .host-benefits p { font-size: var(--type-copy); line-height: 1.75; }
+.button, .language-button, .type-pills button, .map-toggle, .filter-toolbar > select { font-size: var(--type-control); }
+
+@media (max-width: 640px) {
+  .hero-copy h1, .host-hero h1 { font-size: 38px; }
+  .hero-copy > p { font-size: 14px; }
+  .section-head h2, .ai-copy h2, .host-copy h2, .final-cta h2 { font-size: 35px; }
+}
+
