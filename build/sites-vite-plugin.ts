@@ -25,8 +25,8 @@ export function sites(): Plugin {
       root = config.root;
     },
     async closeBundle() {
-      const outputDirectory = resolve(root, "dist", ".openai");
-      const hostingConfig = resolve(root, ".openai", "hosting.json");
+      const outputDirectory = resolve(root, "dist", "hosting");
+      const hostingConfig = resolve(root, "hosting", "hosting.json");
       const generatedDrizzle = resolve(root, "drizzle");
       const legacyDrizzle = resolve(root, "migrations-smartstay");
       const drizzleSource = await exists(generatedDrizzle) ? generatedDrizzle : legacyDrizzle;

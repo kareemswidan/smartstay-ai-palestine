@@ -45,7 +45,7 @@ test("prevents overlapping bookings at the database level", async () => {
 
 test("supports owner property creation and D1-backed image uploads", async () => {
   const [propertyApi, uploadApi, config] = await Promise.all([
-    read("app/api/properties/route.ts"), read("app/api/uploads/route.ts"), read(".openai/hosting.json"),
+    read("app/api/properties/route.ts"), read("app/api/uploads/route.ts"), read("hosting/hosting.json"),
   ]);
   assert.match(propertyApi, /status:\s*"pending"/);
   assert.match(uploadApi, /INSERT INTO ss_uploads/);
