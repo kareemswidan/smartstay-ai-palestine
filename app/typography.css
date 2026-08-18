@@ -21,7 +21,6 @@ html[dir="rtl"] {
 
 body { font-family: var(--body); font-size: 16px; line-height: 1.65; }
 button, input, textarea, select { font-family: inherit; }
-html[dir="rtl"] :is(h1,h2,h3,p,a,button,label,input,textarea,select,small,span) { letter-spacing: 0 !important; }
 .header-shell > nav a { font-size: var(--type-nav); }
 .kicker, .overline { font-family: inherit; font-size: 14px; line-height: 1.5; }
 .hero-copy h1, .host-hero h1 { font-family: var(--display); font-size: var(--type-hero); line-height: 1.02; letter-spacing: -.055em; }
@@ -37,3 +36,73 @@ html[dir="rtl"] :is(h1,h2,h3,p,a,button,label,input,textarea,select,small,span) 
   .section-head h2, .ai-copy h2, .host-copy h2, .final-cta h2 { font-size: 35px; }
 }
 
+
+/* --- Arabic ---------------------------------------------------------------
+   Measured on the deployed Arabic home page at 1280px: 81 of 126 Arabic text
+   nodes rendered under 13px, down to 8px; the hero and section <em> ran in
+   Georgia, a Latin serif carrying no Arabic glyphs, at 54-60px with -3px
+   tracking; 16 nodes were uppercased; the display headings sat at 1.02-1.12
+   line-height; and six colours fell under the 4.5 contrast floor on solid
+   backgrounds. Arabic joins its letters, so tracking breaks words instead of
+   spacing them, uppercase does nothing at all, and the script needs more size
+   and more leading than Latin at the same optical weight. Scoped to
+   html[dir="rtl"] throughout, so the English design is untouched. */
+
+/* Tracking and casing are set all over the sheet, often on selectors heavier
+   than this one, so both are forced off for every Arabic element. */
+html[dir="rtl"] * { letter-spacing: 0 !important; text-transform: none !important; }
+
+/* Georgia has no Arabic, so an italic <em> fell back to a synthesised oblique
+   of whatever the OS offered. Bring it back to the Arabic face, upright. */
+html[dir="rtl"] :is(em, i, blockquote),
+html[dir="rtl"] .step-card > span {
+  font-family: var(--font-arabic);
+  font-style: normal;
+}
+html[dir="rtl"] .hero-copy h1 em { white-space: normal; font-size: 1em; }
+
+/* Leading: 1.02 and 1.12 crowd Arabic ascenders and marks. */
+html[dir="rtl"] :is(.hero-copy h1, .host-hero h1) { line-height: 1.3; }
+html[dir="rtl"] :is(.section-head h2, .ai-copy h2, .host-copy h2, .final-cta h2) { line-height: 1.32; }
+html[dir="rtl"] :is(.auth-card-head h1, .stay-title h1, .dashboard-heading h1) { line-height: 1.3; }
+
+/* Size. The tokens carry most of the interface; the rest are px values set
+   directly on small chrome, so the ones that measured under 13px are lifted
+   to a floor of 11.5px for badges and 13.5px for anything readable as copy. */
+html[dir="rtl"] {
+  --type-copy: 14.5px;
+  --type-nav: 13.5px;
+  --type-control: 12.5px;
+  --type-small: 11.5px;
+}
+html[dir="rtl"] :is(small, h4, .stay-badge, .instant-badge, .overline,
+  .kicker, .prompt-chips button, .avatar-stack span, .role-choice small,
+  .demo-login, .demo-login button, .form-error, .auth-switch,
+  .floating-proof small, .floating-price small, .floating-price b span,
+  .hero-trust small, .console-top small, .preview-stats span,
+  .host-earn small, .ai-response) { font-size: 11.5px; }
+html[dir="rtl"] :is(.header-shell > nav a, .ai-points span, .host-copy li,
+  .play-link, .section-head a, .search-submit b, .stay-location span,
+  .stay-price span, .profile-menu > a, .text-link, .host-login,
+  .ai-message, .ai-console textarea, .step-card p, .host-benefits p,
+  .stay-content > p, .auth-card-head p, .auth-card form label,
+  .role-choice b, .preview-top, .host-pricing span) { font-size: 13.5px; }
+html[dir="rtl"] :is(.button, .language-button, .header-cta, .ai-action) { font-size: 12.5px; }
+html[dir="rtl"] :is(.site-footer p, .site-footer a, .site-footer span,
+  .footer-bottom span, .city-card p, .floating-proof b, .hero-trust b) { font-size: 12.5px; }
+
+/* Contrast. --muted on paper measured 4.39 and the mint used for text 2.05
+   to 2.51. The tokens also paint borders, icons and fills, so only the text
+   colours move, and only in Arabic. */
+html[dir="rtl"] {
+  --muted: #5a6461;
+}
+/* The mint reads as text in two places at once: dark green where it sits on
+   the cream and sand panels, and the light mint where it sits on the forest.
+   Measured: #0d6b53 gives 5.78 on cream and 5.28 on sand, #8ff0d3 gives 10.66
+   on the forest sections. */
+html[dir="rtl"] :is(.kicker:not(.kicker-light), .instant-badge, .host-copy li span,
+  .ai-response a, .ai-response > span, .auth-switch a, .host-earn span,
+  .overline.dark, .host-copy h2 em) { color: #0d6b53; }
+html[dir="rtl"] :is(.hero-copy h1 em, .ai-copy h2 em, .host-hero h1 em,
+  .kicker-light) { color: #8ff0d3; }
