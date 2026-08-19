@@ -101,8 +101,26 @@ html[dir="rtl"] {
    the cream and sand panels, and the light mint where it sits on the forest.
    Measured: #0d6b53 gives 5.78 on cream and 5.28 on sand, #8ff0d3 gives 10.66
    on the forest sections. */
-html[dir="rtl"] :is(.kicker:not(.kicker-light), .instant-badge, .host-copy li span,
+html[dir="rtl"] :is(.kicker, .instant-badge, .host-copy li span,
   .ai-response a, .ai-response > span, .auth-switch a, .host-earn span,
-  .overline.dark, .host-copy h2 em) { color: #0d6b53; }
-html[dir="rtl"] :is(.hero-copy h1 em, .ai-copy h2 em, .host-hero h1 em,
-  .kicker-light) { color: #8ff0d3; }
+  .overline.dark, .host-copy h2 em, .results-meta span) { color: #0d6b53; }
+/* .kicker-light is the variant for dark sections -- that is what it is for --
+   so it keeps the light mint wherever it appears. Listing the dark sections
+   instead was the wrong shape: it read 1.18 on the sections that were listed
+   and 2.22 on /ai-planner and /about, which were not. The one place the class
+   is used against a pale panel is the pricing strip, so that is the exception. */
+html[dir="rtl"] .kicker.kicker-light { color: #8ff0d3; }
+html[dir="rtl"] .host-pricing .kicker.kicker-light { color: #0d6b53; }
+html[dir="rtl"] :is(.hero-copy h1 em, .ai-copy h2 em, .host-hero h1 em) { color: #8ff0d3; }
+html[dir="rtl"] .planner-page aside p b { font-size: 12.5px; }
+
+/* The size floor, extended to the pages beyond the home page. Measured across
+   /explore, /stays/[slug], /host, /ai-planner and /about at 1920. */
+html[dir="rtl"] :is(.review-tags span, .planner-suggestions button,
+  .planner-controls label span, .planner-controls label b, .price-filter span,
+  .stay-breadcrumb a, .stay-breadcrumb span, .stay-breadcrumb b,
+  .stay-title button, .booking-price span, .availability-button,
+  .price-breakdown p span, .booking-safety p b, .results-meta span,
+  .stay-intro span) { font-size: 12.5px; }
+html[dir="rtl"] :is(.results-meta p, .stay-title p, .stay-title u,
+  .review-insight p, .content-section article p) { font-size: 13.5px; }
