@@ -1,0 +1,33 @@
+{
+  // Deployment config for the live Worker at
+  // smartstay-palestine.kareemswidan11.workers.dev.
+  //
+  // `vinext deploy` scaffolds this file only when it is missing, and its
+  // scaffold is a generic template: it names the Worker "smartstay-ai", binds
+  // DB to a "site-creator-d1" database that does not exist in this account
+  // (placeholder id 00000000-0000-4000-8000-000000000000) and adds an Images
+  // binding. Deploying with that fails with API error 10181. The values below
+  // are read back from the deployed Worker itself, so a local deploy now
+  // reproduces production instead of inventing a new one.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "smartstay-palestine",
+  "compatibility_date": "2026-05-15",
+  "compatibility_flags": ["nodejs_compat"],
+  "main": "./worker/index.ts",
+  "assets": {
+    "directory": "dist/client",
+    "not_found_handling": "none",
+    "binding": "ASSETS"
+  },
+  // The live Worker binds DB and ASSETS and nothing else. worker/index.ts also
+  // declares UPLOADS and IMAGES in its Env type, but UPLOADS is never read and
+  // IMAGES is only touched on /_vinext/image, so the binding surface is kept
+  // identical to what is already running rather than widened at deploy time.
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "smartstay-production",
+      "database_id": "7c570b7f-896a-43b0-b0fe-c31ec75dee8a"
+    }
+  ]
+}
